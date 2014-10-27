@@ -36,6 +36,7 @@ sentiment_data/*
 text8
 __pycache__/*
 *.pyc
+*.egg-info
 
 # Logs and databases #
 ######################
