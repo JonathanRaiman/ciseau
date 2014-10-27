@@ -1,2 +1,2 @@
 include README.md
-include *.pyx
+recursive-include xml_cleaner *.pyx
