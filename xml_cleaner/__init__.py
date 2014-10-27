@@ -4,8 +4,8 @@ Module for XML cleaning and text tokenization.
 Usage
 -----
 
-> xml_cleaner.to_raw_text("Joey was a great sailor.")
-#=> ["Joey", "was", "a", "great", "sailor", "."]
+> [sentence for sentence in xml_cleaner.to_raw_text("Joey was a great sailor.")]
+#=> [["Joey", "was", "a", "great", "sailor", "."]]
 
 """
 import pyximport
