@@ -5,13 +5,13 @@ def readfile(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name='xml_cleaner',
+    name='xml-cleaner',
     version='1.0.0',
     description='Python package for cleaning up xml and tokenizing text',
-    long_description=readfile('xml_cleaner/README.md'),
+    long_description=readfile('README.md'),
     ext_modules=[],
     packages=find_packages(),
-    py_modules = ["xml_cleaner"],
+    py_modules = ["xml-cleaner"],
     author='Jonathan Raiman',
     author_email='jraiman at mit dot edu',
     url='https://github.com/JonathanRaiman/xml_cleaner',
