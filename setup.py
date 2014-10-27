@@ -6,12 +6,12 @@ def readfile(fname):
 
 setup(
     name='xml-cleaner',
-    version='1.0.0',
+    version='1.0.5',
     description='Python package for cleaning up xml and tokenizing text',
     long_description=readfile('README.md'),
     ext_modules=[],
     packages=find_packages(),
-    py_modules = ["xml-cleaner"],
+    py_modules = [],
     author='Jonathan Raiman',
     author_email='jraiman at mit dot edu',
     url='https://github.com/JonathanRaiman/xml_cleaner',
