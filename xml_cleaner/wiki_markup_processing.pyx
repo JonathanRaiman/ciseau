@@ -100,6 +100,27 @@ cdef list preprocess_text(str text):
 								    	         _remove_mvar(
 								    	         	_remove_urls(text)))))))))))))
 
+cdef list preprocess_text_markupless(str text):
+	return process_text(remove_dates(_remove_urls(text)))
+
+def to_raw_text_markupless(str text):
+	"""
+	A generator to convert raw text segments, without xml to a
+	list of words without any markup.
+	Additionally dates are replaced by `7777` for normalization.
+
+	Inputs
+	------
+	 str text: a piece of text
+
+	Outputs
+	-------
+	 generator<list<list<str>>>, a generator for sentences, with
+	 within each sentence a list of the words separated.
+	"""
+	for sentence in preprocess_text_markupless(text):
+		yield sentence
+
 def to_raw_text(str text):
 	"""
 	A generator to convert raw text segments, with xml, and other
