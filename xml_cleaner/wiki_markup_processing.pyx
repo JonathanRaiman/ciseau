@@ -1,5 +1,6 @@
 import re
 import pyximport
+pyximport.install()
 import word_tokenizer
 
 bracket_parser           = re.compile("\[\[(?P<name>[^\]\|]+)(?:\|[\W]*(?P<trigger>[^\]\#\|]+)(?:\#[^\]\|]+)?)*\]\]")
