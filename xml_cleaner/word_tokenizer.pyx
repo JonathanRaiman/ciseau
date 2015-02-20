@@ -63,8 +63,8 @@ exclamation_mark = "!"
 
 # create a hash of these abbreviations:
 for abbreviation_type in [people, army, inst, place, comp, state, month, misc, website]:
-	for abbreviation in abbreviation_type:
-		abbr[abbreviation] = True
+    for abbreviation in abbreviation_type:
+        abbr[abbreviation] = True
 
 cdef list _split_and_group_sentences(list array):
     cdef list tokenized = array
@@ -133,124 +133,124 @@ cdef list _split_and_group_sentences(list array):
     return sentences
 
 def split_and_group_sentences(list array):
-	return _split_and_group_sentences(array)
+    return _split_and_group_sentences(array)
 
 cdef list _split_sentences(list array):
-	cdef list tokenized = array
-	cdef list words = []
-	cdef int i = 0
-	cdef int length = len(tokenized)
-	for i in range(length):
-		abbreviation_match = word_with_period.match(tokenized[i])
-		if tokenized[i + 1] and uppercased.match(tokenized[i + 1]) and abbreviation_match:
-			word_without_final_period = abbreviation_match.group(1)
-			# Don't separate the period off words that 
-			# meet any of the following conditions:
-			#
-			# 1. It is defined in one of the lists above
-			# 2. It is only one letter long: Alfred E. Sloan 
-			# 3. It has a repeating letter-dot: U.S.A. or J.C. Penney
-			if not abbr.get(word_without_final_period.downcase) \
-			and not one_letter_long_or_repeating.match(word_without_final_period):
-				words.append(word_without_final_period)
-				words.append(period)
-				continue
-		words.append(tokenized[i])
-	# If the final word ends in a period..
+    cdef list tokenized = array
+    cdef list words = []
+    cdef int i = 0
+    cdef int length = len(tokenized)
+    for i in range(length):
+        abbreviation_match = word_with_period.match(tokenized[i])
+        if tokenized[i + 1] and uppercased.match(tokenized[i + 1]) and abbreviation_match:
+            word_without_final_period = abbreviation_match.group(1)
+            # Don't separate the period off words that 
+            # meet any of the following conditions:
+            #
+            # 1. It is defined in one of the lists above
+            # 2. It is only one letter long: Alfred E. Sloan 
+            # 3. It has a repeating letter-dot: U.S.A. or J.C. Penney
+            if not abbr.get(word_without_final_period.downcase) \
+            and not one_letter_long_or_repeating.match(word_without_final_period):
+                words.append(word_without_final_period)
+                words.append(period)
+                continue
+        words.append(tokenized[i])
+    # If the final word ends in a period..
 
-	if len(words) > 0 and words[-1]:
-		alpha_word_piece = word_with_alpha_and_period.match(words[-1])
-		if alpha_word_piece:
-			words[-1] = alpha_word_piece.group(1)
-			words.append(period)
-	return words
+    if len(words) > 0 and words[-1]:
+        alpha_word_piece = word_with_alpha_and_period.match(words[-1])
+        if alpha_word_piece:
+            words[-1] = alpha_word_piece.group(1)
+            words.append(period)
+    return words
 
 def split_sentences(list array):
-	return _split_sentences(array)
+    return _split_sentences(array)
 
 def split_punct(str text):
-	return _split_punct(text)
+    return _split_punct(text)
 
 cdef list _split_punct_keep_brackets(str text):
-	# If there's no punctuation, return immediately
-	if no_punctuation.match(text):
-		return [text]
+    # If there's no punctuation, return immediately
+    if no_punctuation.match(text):
+        return [text]
 
-		# Shift off other ``standard'' punctuation
-		# Shift off brackets
+        # Shift off other ``standard'' punctuation
+        # Shift off brackets
 
-		# Shift semicolons off
-		# Shift ellipses off 
-		# Shift commas off everything but numbers
-		# Convert and separate dashes
-		# Separate right single quotes
-		# Convert (remaining) quotes to ''
-		# Convert left quotes to ` 
-		# Convert left quotes to `` 
-		# shift quotes left.
-		# Put quotes into a standard format
-	return french_appendages.sub("\g<1>' ",                                                     \
-			shifted_standard_punctuation.sub(" \g<1> ",                                         \
-				shifted_parenthesis_squiggly_brackets.sub(" \g<1> ",                            \
-					shifted_ellipses.sub(" ...",                                                \
-						semicolon_shifter.sub("\g<1> : \g<2>",                                  \
-							comma_shifter.sub(" , ",                                            \
-								dash_converter.sub(" - ",                                       \
-									right_single_quote_converter.sub("\g<1> ' ",                \
-										english_specific_appendages.sub("\g<1> '\g<2>",         \
-											english_contractions.sub(" '\g<1>",                 \
-												english_nots.sub(" n't",                        \
-													remaining_quote_converter.sub(" '' ",           \
-														left_single_quote_converter.sub("\g<1> ` ", \
-															left_quote_converter.sub(" `` ",        \
-																left_quote_shifter.sub("` ",        \
-																	period_mover.sub("\g<1> \g<2> \g<3>", text)))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
+        # Shift semicolons off
+        # Shift ellipses off 
+        # Shift commas off everything but numbers
+        # Convert and separate dashes
+        # Separate right single quotes
+        # Convert (remaining) quotes to ''
+        # Convert left quotes to ` 
+        # Convert left quotes to `` 
+        # shift quotes left.
+        # Put quotes into a standard format
+    return french_appendages.sub("\g<1>' ",                                                     \
+            shifted_standard_punctuation.sub(" \g<1> ",                                         \
+                shifted_parenthesis_squiggly_brackets.sub(" \g<1> ",                            \
+                    shifted_ellipses.sub(" ...",                                                \
+                        semicolon_shifter.sub("\g<1> : \g<2>",                                  \
+                            comma_shifter.sub(" , ",                                            \
+                                dash_converter.sub(" - ",                                       \
+                                    right_single_quote_converter.sub("\g<1> ' ",                \
+                                        english_specific_appendages.sub("\g<1> '\g<2>",         \
+                                            english_contractions.sub(" '\g<1>",                 \
+                                                english_nots.sub(" n't",                        \
+                                                    remaining_quote_converter.sub(" '' ",           \
+                                                        left_single_quote_converter.sub("\g<1> ` ", \
+                                                            left_quote_converter.sub(" `` ",        \
+                                                                left_quote_shifter.sub("` ",        \
+                                                                    period_mover.sub("\g<1> \g<2> \g<3>", text)))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
 
 cdef list _split_punct(str text):
-	# If there's no punctuation, return immediately
-	if no_punctuation.match(text):
-		return [text]
+    # If there's no punctuation, return immediately
+    if no_punctuation.match(text):
+        return [text]
 
-		# Shift off other ``standard'' punctuation
-		# Shift off brackets
+        # Shift off other ``standard'' punctuation
+        # Shift off brackets
 
-		# Shift semicolons off
-		# Shift ellipses off 
-		# Shift commas off everything but numbers
-		# Convert and separate dashes
-		# Separate right single quotes
-		# Convert (remaining) quotes to ''
-		# Convert left quotes to ` 
-		# Convert left quotes to `` 
-		# shift quotes left.
-		# Put quotes into a standard format
-	return french_appendages.sub("\g<1>' ",                                                     \
-			shifted_standard_punctuation.sub(" \g<1> ",                                         \
-				shifted_brackets.sub(" \g<1> ",                                                 \
-					shifted_ellipses.sub(" ...",                                                \
-						semicolon_shifter.sub("\g<1> : \g<2>",                                  \
-							comma_shifter.sub(" , ",                                            \
-								dash_converter.sub(" - ",                                       \
-									right_single_quote_converter.sub("\g<1> ' ",                \
-										english_specific_appendages.sub("\g<1> '\g<2>",         \
-											english_contractions.sub(" '\g<1>",                 \
-												english_nots.sub(" n't",                        \
-													remaining_quote_converter.sub(" '' ",           \
-														left_single_quote_converter.sub("\g<1> ` ", \
-															left_quote_converter.sub(" `` ",        \
-																left_quote_shifter.sub("` ",        \
-																	period_mover.sub("\g<1> \g<2> \g<3>", text)))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
-	
+        # Shift semicolons off
+        # Shift ellipses off 
+        # Shift commas off everything but numbers
+        # Convert and separate dashes
+        # Separate right single quotes
+        # Convert (remaining) quotes to ''
+        # Convert left quotes to ` 
+        # Convert left quotes to `` 
+        # shift quotes left.
+        # Put quotes into a standard format
+    return french_appendages.sub("\g<1>' ",                                                     \
+            shifted_standard_punctuation.sub(" \g<1> ",                                         \
+                shifted_brackets.sub(" \g<1> ",                                                 \
+                    shifted_ellipses.sub(" ...",                                                \
+                        semicolon_shifter.sub("\g<1> : \g<2>",                                  \
+                            comma_shifter.sub(" , ",                                            \
+                                dash_converter.sub(" - ",                                       \
+                                    right_single_quote_converter.sub("\g<1> ' ",                \
+                                        english_specific_appendages.sub("\g<1> '\g<2>",         \
+                                            english_contractions.sub(" '\g<1>",                 \
+                                                english_nots.sub(" n't",                        \
+                                                    remaining_quote_converter.sub(" '' ",           \
+                                                        left_single_quote_converter.sub("\g<1> ` ", \
+                                                            left_quote_converter.sub(" `` ",        \
+                                                                left_quote_shifter.sub("` ",        \
+                                                                    period_mover.sub("\g<1> \g<2> \g<3>", text)))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
+    
 cdef list _split_and_group_sentences_using_text(str text):
-	return split_and_group_sentences(_split_punct(text))
+    return split_and_group_sentences(_split_punct(text))
 
 def split_and_group_sentences_using_text_keep_brackets(str text):
-	return _split_and_group_sentences(_split_punct_keep_brackets(text))
+    return _split_and_group_sentences(_split_punct_keep_brackets(text))
 
 def split_and_group_sentences_using_text(str text):
-	return _split_and_group_sentences(_split_punct(text))
-	
-	# English-specific contractions (let's not be that specific)
-	# text = text.gsub(/([A-Za-z])'([dms])\b/o){$1 + " '" + $2}  # Separate off 'd 'm 's
-	# text = text.gsub(/n't\b/o, " n't")                     # Separate off n't      
-	# text = text.gsub(/'(ve|ll|re)\b/o){" '" + $1}         # Separate off 've, 'll, 're
+    return _split_and_group_sentences(_split_punct(text))
+    
+    # English-specific contractions (let's not be that specific)
+    # text = text.gsub(/([A-Za-z])'([dms])\b/o){$1 + " '" + $2}  # Separate off 'd 'm 's
+    # text = text.gsub(/n't\b/o, " n't")                     # Separate off n't      
+    # text = text.gsub(/'(ve|ll|re)\b/o){" '" + $1}         # Separate off 've, 'll, 're
