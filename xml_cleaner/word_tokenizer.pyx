@@ -1,7 +1,7 @@
 import re
 
 uppercased                   = re.compile("[A-ZÀ-Þ\W]")
-word_with_period             = re.compile("^([^\.]+)\.$")
+word_with_period             = re.compile("^([\w\.]+)\.$")
 word_with_alpha_and_period   = re.compile("^([^\.]+)\.$")
 one_letter_long_or_repeating = re.compile("^(?:(?:[a-z])|(?:[a-z](?:\.[a-z])+))$", re.IGNORECASE)
 
@@ -15,7 +15,7 @@ right_single_quote_converter = re.compile("(\w)'(?!')(?=\W|$)")
 
 dashes = ["–", "--+", "â\x80\x93"]
 for i in range(8208, 8214):
-	dashes.append(chr(i))
+    dashes.append(chr(i))
 dash_converter               = re.compile("|".join(dashes))
 
 semicolon_shifter            = re.compile("(.):([^/])")
@@ -25,7 +25,7 @@ shifted_ellipses             = re.compile("(\.\.\.+|…)")
 shifted_brackets             = re.compile("([\(\[\{\}\]\)])")
 shifted_parenthesis_squiggly_brackets = re.compile("([\(\{\}\)])")
 shifted_standard_punctuation = re.compile("([\!\?#\$%;~|])")
-period_mover                 = re.compile("([a-zA-ZÀ-Þ]{2})([\./])([a-zA-ZÀ-Þ]{2})") # glued periods.
+period_mover                 = re.compile("([a-zA-ZÀ-Þ]{2})([\./])\s+([a-zA-ZÀ-Þ]{2})") # glued periods.
 
 english_specific_appendages = re.compile("([A-Za-z])['’]([dms])\\b")
 english_nots = re.compile("n['’]t\\b")
@@ -33,24 +33,24 @@ english_contractions = re.compile("['’](ve|ll|re)\\b")
 french_appendages = re.compile("(\\b[tjnlsmdclTJNLSMLDC]|qu)['’](?=[^tdms])")
 
 people = [
-		"jr", "mr", "ms", "mrs", "dr", "prof", "esq", "sr",
-		"sen", "sens", "rep", "reps", "gov", "attys", "attys",
-		"supt", "det", "mssrs", "rev"]
+        "jr", "mr", "ms", "mrs", "dr", "prof", "esq", "sr",
+        "sen", "sens", "rep", "reps", "gov", "attys", "attys",
+        "supt", "det", "mssrs", "rev"]
 army   = ["col", "gen", "lt", "cmdr", "adm", "capt", "sgt", "cpl", "maj", "brig"]
 inst   = ["dept","univ", "assn", "bros", "ph.d"]
 place  = [
-	"arc", "al", "ave", "blvd", "bld", "cl", "ct",
-	"cres", "exp", "expy", "dist", "mt", "mtn", "ft",
-	"fy", "fwy", "hwy", "hway", "la", "pde", "pd","plz", "pl", "rd", "st", "tce"]
+    "arc", "al", "ave", "blvd", "bld", "cl", "ct",
+    "cres", "exp", "expy", "dist", "mt", "mtn", "ft",
+    "fy", "fwy", "hwy", "hway", "la", "pde", "pd","plz", "pl", "rd", "st", "tce"]
 comp   = ["mfg", "inc", "ltd", "co", "corp"]
 state  = [
-	"ala","ariz","ark","cal","calif","colo","col","conn",
-	"del","fed","fla","ga","ida","id","ill","ind","ia","kans",
-	"kan","ken","ky","la","me","md","is","mass","mich","minn",
-	"miss","mo","mont","neb","nebr","nev","mex","okla","ok",
-	"ore","penna","penn","pa","dak","tenn","tex","ut","vt",
-	"va","wash","wis","wisc","wy","wyo","usafa","alta",
-	"man","ont","que","sask","yuk"]
+    "ala","ariz","ark","cal","calif","colo","col","conn",
+    "del","fed","fla","ga","ida","id","ill","ind","ia","kans",
+    "kan","ken","ky","la","me","md","is","mass","mich","minn",
+    "miss","mo","mont","neb","nebr","nev","mex","okla","ok",
+    "ore","penna","penn","pa","dak","tenn","tex","ut","vt",
+    "va","wash","wis","wisc","wy","wyo","usafa","alta",
+    "man","ont","que","sask","yuk"]
 month  =  ["jan","feb","mar","apr","may","jun","jul","aug","sep","sept","oct","nov","dec"]
 misc   = ["vs","etc", "no","esp", "ed", "iv", "Oper", ""]
 website = ["www"]
@@ -67,46 +67,70 @@ for abbreviation_type in [people, army, inst, place, comp, state, month, misc, w
 		abbr[abbreviation] = True
 
 cdef list _split_and_group_sentences(list array):
-	cdef list tokenized = array
-	cdef list words = []
-	cdef list sentences = []
-	cdef int i = 0
-	cdef int length = len(tokenized)
-	for i in range(length):
-		if (tokenized[i] == period) or (tokenized[i] == question_mark) or (tokenized[i] == ellipsis) or (tokenized[i] == exclamation_mark):
-			words.append(tokenized[i])
-			sentences.append(words)
-			words = []
-		else:
-			abbreviation_match = word_with_period.match(tokenized[i])
-			if len(tokenized) > i+1 and tokenized[i + 1] and uppercased.match(tokenized[i + 1]) and abbreviation_match:
-				word_without_final_period = abbreviation_match.group(1)
-				# Don't separate the period off words that 
-				# meet any of the following conditions:
-				#
-				# 1. It is defined in one of the lists above
-				# 2. It is only one letter long: Alfred E. Sloan 
-				# 3. It has a repeating letter-dot: U.S.A. or J.C. Penney
-				if not abbr.get(word_without_final_period.lower()) \
-				and not one_letter_long_or_repeating.match(word_without_final_period):
-					words.append(word_without_final_period)
-					words.append(period)
-					sentences.append(words)
-					words = []
-					continue
-			words.append(tokenized[i])
+    cdef list tokenized = array
+    cdef list words = []
+    cdef list sentences = []
+    cdef int i = 0
+    cdef int length = len(tokenized)
+    for i in range(length):
+        if (tokenized[i] == period) or (tokenized[i] == question_mark) or (tokenized[i] == ellipsis) or (tokenized[i] == exclamation_mark):
+            words.append(tokenized[i])
+            sentences.append(words)
+            words = []
+        else:
+            potential_last_word = word_with_period.match(tokenized[i])
+            if potential_last_word is not None:
+                # Don't separate the period off words that 
+                # meet any of the following conditions:
+                #
+                # 1. It is defined in one of the lists above
+                # 2. It is only one letter long: Alfred E. Sloan 
+                # 3. It has a repeating letter-dot: U.S.A. or J.C. Penney
+                
+                
+                word_without_final_period = potential_last_word.group(1)
+                
+                likely_abbreviation = abbr.get(word_without_final_period.lower()) or \
+                        one_letter_long_or_repeating.match(word_without_final_period)
+                
+                likely_last_word = len(tokenized) == i+1
+                
+                next_word_uppercase = len(tokenized) > i+1 and tokenized[i + 1] and uppercased.match(tokenized[i + 1])
+                
+                end_sentence = False
+                
+                if next_word_uppercase:
+                    if likely_abbreviation:
+                        words.append(tokenized[i])
+                    else:
+                        words.append(word_without_final_period)
+                        end_sentence = True
+                else:
+                    if likely_last_word:
+                        end_sentence = True
+                    if likely_abbreviation:
+                        words.append(tokenized[i])
+                    else:
+                        words.append(word_without_final_period)
+                
+                if end_sentence:
+                    words.append(period)
+                    sentences.append(words)
+                    words = []
+            else:
+                words.append(tokenized[i])
+                    
+    # add final sentence, if it wasn't added yet.
+    if len(words) > 0:
+        sentences.append(words)
 
-	# add final sentence, if it wasn't added yet.
-	if len(words) > 0:
-		sentences.append(words)
-
-	# If the final word ends in a period:
-	if len(sentences) > 0 and sentences[-1][-1]:
-		alpha_word_piece = word_with_alpha_and_period.match(sentences[-1][-1])
-		if alpha_word_piece:
-			sentences[-1][-1] = alpha_word_piece.group(1)
-			sentences[-1].append(period)
-	return sentences
+    # If the final word ends in a period:
+    if len(sentences) > 0 and sentences[-1][-1]:
+        alpha_word_piece = word_with_alpha_and_period.match(sentences[-1][-1])
+        if alpha_word_piece:
+            sentences[-1][-1] = alpha_word_piece.group(1)
+            sentences[-1].append(period)
+    return sentences
 
 def split_and_group_sentences(list array):
 	return _split_and_group_sentences(array)
