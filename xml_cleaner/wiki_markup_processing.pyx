@@ -153,7 +153,7 @@ cdef list preprocess_text_keeping_brackets(str text):
                                 _remove_table(                               \
                                     _remove_squiggly_bracket(                \
                                         _remove_mvar(                        \
-                                            _remove_urls(text))))))))))                     
+                                            text)))))))))                     
 
 def to_raw_text_pairings(str text):
     """
