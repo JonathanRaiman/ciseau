@@ -11,7 +11,7 @@ Usage
 import pyximport
 pyximport.install()
 
-from .wiki_markup_processing import to_raw_text, to_raw_text_markupless, remove_brackets
+from .wiki_markup_processing import to_raw_text, to_raw_text_markupless, remove_brackets, to_raw_text_pairings
 from .word_tokenizer import split_sentences, split_and_group_sentences, split_punct
 
 __all__ = [
