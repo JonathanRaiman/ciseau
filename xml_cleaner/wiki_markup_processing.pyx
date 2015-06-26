@@ -104,6 +104,10 @@ cdef list preprocess_text(str text):
 cdef list preprocess_text_markupless(str text):
     return process_text(remove_dates(_remove_urls(text)))
 
+def tokenize(str text):
+    for sentence in process_text(text):
+        yield sentence
+
 def to_raw_text_markupless(str text):
     """
     A generator to convert raw text segments, without xml to a
