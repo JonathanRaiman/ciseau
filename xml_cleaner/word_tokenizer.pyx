@@ -61,6 +61,8 @@ ellipsis         = "..."
 question_mark    = "?"
 exclamation_mark = "!"
 
+PUNCT_SYMBOLS = set([period, ellipsis, question_mark, exclamation_mark])
+
 # create a hash of these abbreviations:
 for abbreviation_type in [people, army, inst, place, comp, state, month, misc, website]:
     for abbreviation in abbreviation_type:
@@ -73,32 +75,34 @@ cdef list _split_and_group_sentences(list array):
     cdef int i = 0
     cdef int length = len(tokenized)
     for i in range(length):
-        if (tokenized[i] == period) or (tokenized[i] == question_mark) or (tokenized[i] == ellipsis) or (tokenized[i] == exclamation_mark):
+        if tokenized[i] in PUNCT_SYMBOLS:
             words.append(tokenized[i])
             sentences.append(words)
             words = []
         else:
             potential_last_word = word_with_period.match(tokenized[i])
+            print(potential_last_word, tokenized[i])
             if potential_last_word is not None:
-                # Don't separate the period off words that 
+                # Don't separate the period off words that
                 # meet any of the following conditions:
                 #
                 # 1. It is defined in one of the lists above
-                # 2. It is only one letter long: Alfred E. Sloan 
+                # 2. It is only one letter long: Alfred E. Sloan
                 # 3. It has a repeating letter-dot: U.S.A. or J.C. Penney
-                
-                
+
+
                 word_without_final_period = potential_last_word.group(1)
-                
+
                 likely_abbreviation = abbr.get(word_without_final_period.lower()) or \
                         one_letter_long_or_repeating.match(word_without_final_period)
-                
+                print(likely_abbreviation)
+
                 likely_last_word = len(tokenized) == i+1
-                
+
                 next_word_uppercase = len(tokenized) > i+1 and tokenized[i + 1] and uppercased.match(tokenized[i + 1])
-                
+
                 end_sentence = False
-                
+
                 if next_word_uppercase:
                     if likely_abbreviation:
                         words.append(tokenized[i])
@@ -112,14 +116,14 @@ cdef list _split_and_group_sentences(list array):
                         words.append(tokenized[i])
                     else:
                         words.append(word_without_final_period)
-                
+
                 if end_sentence:
                     words.append(period)
                     sentences.append(words)
                     words = []
             else:
                 words.append(tokenized[i])
-                    
+
     # add final sentence, if it wasn't added yet.
     if len(words) > 0:
         sentences.append(words)
@@ -144,11 +148,11 @@ cdef list _split_sentences(list array):
         abbreviation_match = word_with_period.match(tokenized[i])
         if tokenized[i + 1] and uppercased.match(tokenized[i + 1]) and abbreviation_match:
             word_without_final_period = abbreviation_match.group(1)
-            # Don't separate the period off words that 
+            # Don't separate the period off words that
             # meet any of the following conditions:
             #
             # 1. It is defined in one of the lists above
-            # 2. It is only one letter long: Alfred E. Sloan 
+            # 2. It is only one letter long: Alfred E. Sloan
             # 3. It has a repeating letter-dot: U.S.A. or J.C. Penney
             if not abbr.get(word_without_final_period.downcase) \
             and not one_letter_long_or_repeating.match(word_without_final_period):
@@ -180,13 +184,13 @@ cdef list _split_punct_keep_brackets(str text):
         # Shift off brackets
 
         # Shift semicolons off
-        # Shift ellipses off 
+        # Shift ellipses off
         # Shift commas off everything but numbers
         # Convert and separate dashes
         # Separate right single quotes
         # Convert (remaining) quotes to ''
-        # Convert left quotes to ` 
-        # Convert left quotes to `` 
+        # Convert left quotes to `
+        # Convert left quotes to ``
         # shift quotes left.
         # Put quotes into a standard format
     return french_appendages.sub("\g<1>' ",                                                     \
@@ -204,7 +208,30 @@ cdef list _split_punct_keep_brackets(str text):
                                                         left_single_quote_converter.sub("\g<1> ` ", \
                                                             left_quote_converter.sub(" `` ",        \
                                                                 left_quote_shifter.sub("` ",        \
-                                                                    period_mover.sub("\g<1> \g<2> \g<3>", text)))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
+                                                                    period_mover.sub("\g<1> \g<2> \g<3>",
+                                                                        period_mover.sub("\g<1> \g<2> \g<3>",
+                                                                            text))))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
+
+shorthand_symbol = "**§**"
+
+cdef str protect_shorthand(str text):
+    words = text.split()
+    out_words = []
+    total_words = len(words)
+    for i, word in enumerate(words):
+        if word.endswith("."):
+            if word[:-1].lower() in abbr:
+                if i == total_words - 1:
+                    continue
+                else:
+                    if words[i+1][0].isupper() or words[i+1] in PUNCT_SYMBOLS:
+                        out_words.append(word[:-1] + shorthand_symbol)
+                        continue
+        out_words.append(word)
+    return " ".join(out_words)
+
+cdef str undo_shorthand(str text):
+    return text.replace(shorthand_symbol, ".")
 
 cdef list _split_punct(str text):
     # If there's no punctuation, return immediately
@@ -215,16 +242,17 @@ cdef list _split_punct(str text):
         # Shift off brackets
 
         # Shift semicolons off
-        # Shift ellipses off 
+        # Shift ellipses off
         # Shift commas off everything but numbers
         # Convert and separate dashes
         # Separate right single quotes
         # Convert (remaining) quotes to ''
-        # Convert left quotes to ` 
-        # Convert left quotes to `` 
+        # Convert left quotes to `
+        # Convert left quotes to ``
         # shift quotes left.
         # Put quotes into a standard format
-    return french_appendages.sub("\g<1>' ",                                                     \
+    return undo_shorthand(
+        french_appendages.sub("\g<1>' ",                                                        \
             shifted_standard_punctuation.sub(" \g<1> ",                                         \
                 shifted_brackets.sub(" \g<1> ",                                                 \
                     shifted_ellipses.sub(" ...",                                                \
@@ -239,8 +267,9 @@ cdef list _split_punct(str text):
                                                         left_single_quote_converter.sub("\g<1> ` ", \
                                                             left_quote_converter.sub(" `` ",        \
                                                                 left_quote_shifter.sub("` ",        \
-                                                                    period_mover.sub("\g<1> \g<2> \g<3>", text)))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
-    
+                                                                    period_mover.sub("\g<1> \g<2> \g<3>",
+                                                                        protect_shorthand(text)))))))))))))))))).replace("œ", "oe").replace("æ", "ae").split()
+
 cdef list _split_and_group_sentences_using_text(str text):
     return split_and_group_sentences(_split_punct(text))
 
@@ -249,8 +278,8 @@ def split_and_group_sentences_using_text_keep_brackets(str text):
 
 def split_and_group_sentences_using_text(str text):
     return _split_and_group_sentences(_split_punct(text))
-    
+
     # English-specific contractions (let's not be that specific)
     # text = text.gsub(/([A-Za-z])'([dms])\b/o){$1 + " '" + $2}  # Separate off 'd 'm 's
-    # text = text.gsub(/n't\b/o, " n't")                     # Separate off n't      
+    # text = text.gsub(/n't\b/o, " n't")                     # Separate off n't
     # text = text.gsub(/'(ve|ll|re)\b/o){" '" + $1}         # Separate off 've, 'll, 're
