@@ -81,7 +81,6 @@ cdef list _split_and_group_sentences(list array):
             words = []
         else:
             potential_last_word = word_with_period.match(tokenized[i])
-            print(potential_last_word, tokenized[i])
             if potential_last_word is not None:
                 # Don't separate the period off words that
                 # meet any of the following conditions:
@@ -95,7 +94,6 @@ cdef list _split_and_group_sentences(list array):
 
                 likely_abbreviation = abbr.get(word_without_final_period.lower()) or \
                         one_letter_long_or_repeating.match(word_without_final_period)
-                print(likely_abbreviation)
 
                 likely_last_word = len(tokenized) == i+1
 

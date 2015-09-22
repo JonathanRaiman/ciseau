@@ -6,7 +6,7 @@ def readfile(fname):
 
 setup(
     name='xml-cleaner',
-    version='1.0.19',
+    version='1.0.20',
     description='Python package for cleaning up xml and tokenizing text',
     long_description=readfile('README.md'),
     ext_modules=[],
