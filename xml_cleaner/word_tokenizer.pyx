@@ -222,7 +222,13 @@ cdef str protect_shorthand(str text):
                 if i == total_words - 1:
                     continue
                 else:
-                    if words[i+1][0].isupper() or words[i+1] in PUNCT_SYMBOLS:
+                    if words[i+1][0].islower():
+                        out_words.append(word[:-1] + shorthand_symbol)
+                        continue
+                    elif words[i+1] in PUNCT_SYMBOLS:
+                        out_words.append(word[:-1] + shorthand_symbol)
+                        continue
+                    elif word[0].isupper():
                         out_words.append(word[:-1] + shorthand_symbol)
                         continue
         out_words.append(word)
