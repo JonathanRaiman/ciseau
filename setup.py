@@ -6,8 +6,8 @@ def readfile(fname):
 
 setup(
     name='xml-cleaner',
-    version='1.0.21',
-    description='Python package for cleaning up xml and tokenizing text',
+    version='2.0.0',
+    description='Word and sentence tokenization.',
     long_description=readfile('README.md'),
     ext_modules=[],
     packages=find_packages(),
@@ -24,12 +24,11 @@ setup(
         'Intended Audience :: Science/Research',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 2.7',
         'Topic :: Text Processing :: Linguistic',
     ],
-    # test_suite="something.test",
     setup_requires = [],
     install_requires=[
-        'cython'
     ],
     include_package_data=True,
 )

@@ -4,22 +4,23 @@ Module for XML cleaning and text tokenization.
 Usage
 -----
 
-> [sentence for sentence in xml_cleaner.to_raw_text("Joey was a great sailor.")]
+> xml_cleaner.tokenize("Joey was a great sailor.")
 #=> [["Joey", "was", "a", "great", "sailor", "."]]
 
 """
-import pyximport
-pyximport.install()
 
-from .wiki_markup_processing import to_raw_text, to_raw_text_markupless, remove_brackets, to_raw_text_pairings, tokenize
-from .word_tokenizer import split_sentences, split_and_group_sentences, split_punct
+from .wiki_markup_processing import (
+    to_raw_text,
+    to_raw_text_markupless,
+    to_raw_text_pairings
+)
+from .word_tokenizer import tokenize
+from .sentence_tokenizer import sent_tokenize
 
 __all__ = [
-	"to_raw_text",
-	"to_raw_text_markupless",
-	"remove_brackets",
-	"to_raw_text_pairings",
-	"split_sentences",
-	"split_and_group_sentences",
-    "tokenize",
-	"split_punct"]
+    "to_raw_text",
+    "to_raw_text_markupless",
+    "to_raw_text_pairings",
+    "sent_tokenize",
+    "tokenize"
+]
