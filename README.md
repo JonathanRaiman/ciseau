@@ -3,6 +3,7 @@ XML cleaner
 
 Word and sentence tokenization in Python. Tested in Python `3.4.3` and `2.7.12`.
 
+[![PyPI version](https://badge.fury.io/py/xml-cleaner.svg)](https://badge.fury.io/py/xml-cleaner)
 ![Jonathan Raiman, author](https://img.shields.io/badge/Author-Jonathan%20Raiman%20-blue.svg)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
