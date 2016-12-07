@@ -17,9 +17,9 @@ left_single_quote_converter  = re.compile(u"(?:(\W|^))('\s*)(?=.*\w)", re.UNICOD
 right_single_quote_converter = re.compile(u"(['’]+)(?=\W|$)\s*", re.UNICODE)
 
 if sys.version_info >= (3,3):
-	dash_converter = re.compile("|".join(dashes))
+    dash_converter = re.compile("|".join(dashes))
 else:
-	dash_converter = re.compile(u"|".join(dashes))
+    dash_converter = re.compile(u"|".join(dashes))
 
 simple_dash_finder           = re.compile("(-\s*)")
 advanced_dash_finder         = re.compile("(" + "|".join(matching_dashes) + ")\s*")
@@ -30,10 +30,10 @@ url_file_finder              = re.compile("(?:[-a-zA-Z0-9@%._\+~#=]{2,256}://)?"
 comma_shifter                = re.compile("(,(?!\d)\s*)")
 remaining_quote_converter    = re.compile(u'(.)(?=["“”»])')
 shifted_ellipses             = re.compile("(\.\.\.+|…)\s*")
-shifted_standard_punctuation = re.compile("([\(\[\{\}\]\)\!\?#\$%;~|/:])\s*")
-period_mover                 = re.compile(u"([a-zA-ZÀ-Þ]{2})([\./])\s+([a-zA-ZÀ-Þ]{2})")
+shifted_standard_punctuation = re.compile("([\(\[\{\}\]\)\!\?#\$%;~&+=<>|/:])\s*")
+period_mover                 = re.compile(u"([a-zA-ZÀ-ż]{2})([\./])\s+([a-zA-ZÀ-ż]{2})")
 pure_whitespace              = re.compile("\s+")
-english_specific_appendages = re.compile(u"([A-Za-z])(?=['’]([dms])\\b)", re.UNICODE)
+english_specific_appendages = re.compile(u"(\w)(?=['’]([dms])\\b)", re.UNICODE)
 english_nots = re.compile(u"(.)(?=n['’]t\\b)", re.UNICODE)
 english_contractions = re.compile(u"(.)(?=['’](ve|ll|re)\\b)")
 french_appendages = re.compile(u"(\\b[tjnlsmdclTJNLSMLDC]|qu)['’](?=[^tdms])")

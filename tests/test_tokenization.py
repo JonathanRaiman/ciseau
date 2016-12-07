@@ -17,6 +17,17 @@ class TokenizationTests(unittest.TestCase):
             expression
         )
 
+    def test_weird_hybrid_expressions(self):
+        expression = [
+            u"Beyoncé", u"'s ", u"1840", u"'s ", u"song ", u"<", u"3lovely", u"."
+        ]
+        self.assertEqual(
+            tokenize(
+                "".join(expression)
+            ),
+            expression
+        )
+
     def test_abbreviations(self):
         expression = [
             "Mr. ", "hooligan ", "and ", "his ", "brother ", "DR. ",
@@ -94,7 +105,7 @@ class TokenizationTests(unittest.TestCase):
 
     def test_unequal_quote_detection(self):
         expression = [
-            [u"Beyoncé's ", u'vocal ', u'range ', u'spans ', u'four ', u'octaves',
+            [u"Beyoncé", u"'s ", u'vocal ', u'range ', u'spans ', u'four ', u'octaves',
              u'. '],
             [u'Jody ', u'Rosen ', u'highlights ', u'her ', u'tone ', u'and ',
              u'timbre ', u'as ', u'particularly ', u'distinctive', u', ',
@@ -110,7 +121,7 @@ class TokenizationTests(unittest.TestCase):
             [u'Her ', u'vocal ', u'abilities ', u'mean ', u'she ', u'is ',
              u'identified ', u'as ', u'the ', u'centerpiece ', u'of ', u'Destiny',
              u"'s ", u'Child', u'. '],
-            [u'The ', u'Daily ', u'Mail ', u'calls ', u"Beyoncé's ", u'voice ',
+            [u'The ', u'Daily ', u'Mail ', u'calls ', u"Beyoncé", u"'s ", u'voice ',
              u'"', u'versatile', u'"', u', ', u'capable ', u'of ', u'exploring ',
              u'power ', u'ballads', u', ', u'soul', u', ', u'rock ', u'belting',
              u', ', u'operatic ', u'flourishes', u', ', u'and ', u'hip ', u'hop',
@@ -120,7 +131,7 @@ class TokenizationTests(unittest.TestCase):
              u'yet ', u'tart', u', ', u'with ', u'an ', u'insistent ', u'flutter ',
              u'and ', u'reserves ', u'of ', u'soul ', u'belting', u'"', u'. '],
             [u'Rosen ', u'notes ', u'that ', u'the ', u'hip ', u'hop ', u'era ',
-             u'highly ', u'influenced ', u"Beyoncé's ", u'strange ', u'rhythmic ',
+             u'highly ', u'influenced ', u"Beyoncé", u"'s ", u'strange ', u'rhythmic ',
              u'vocal ', u'style', u', ', u'but ', u'also ', u'finds ', u'her ',
              u'quite ', u'traditionalist ', u'in ', u'her ', u'use ', u'of ',
              u'balladry', u', ', u'gospel ', u'and ', u'falsetto', u'. '],
