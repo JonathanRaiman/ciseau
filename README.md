@@ -1,7 +1,7 @@
 XML cleaner
 -----------
 
-Word and sentence tokenization in Python. Tested in Python `3.4.3` and `2.7.12`.
+Word and sentence tokenization in Python.
 
 [![PyPI version](https://badge.fury.io/py/xml-cleaner.svg)](https://badge.fury.io/py/xml-cleaner)
 [![Build Status](https://travis-ci.org/JonathanRaiman/xml_cleaner.svg?branch=master)](https://travis-ci.org/JonathanRaiman/xml_cleaner)
