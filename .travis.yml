@@ -1,14 +1,15 @@
 language: python
 dist: trusty
 python:
+- '2.7'
 - '3.3'
 - '3.4'
 - '3.5'
 os:
 - linux
 install:
-    - python3 setup.py install
-    - pip3 install nose2
+    - python setup.py install
+    - pip install nose2
 script: nose2
 notifications:
     email:
