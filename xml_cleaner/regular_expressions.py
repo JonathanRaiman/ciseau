@@ -27,10 +27,10 @@ url_file_finder              = re.compile("(?:[-a-zA-Z0-9@%._\+~#=]{2,256}://)?"
                                           "(?:www\.)?[-a-zA-Z0-9@:%\._\+~#=]{2,"
                                           "256}\.[a-z]{2,6}[-a-zA-Z0-9@:%_\+.~#"
                                           "?&//=]*\s*")
-comma_shifter                = re.compile("(,(?!\d)\s*)")
+numerical_expression         = re.compile("(\d+(?:,\d+)*(?:\.\d+)*(?![a-zA-ZÀ-ż])\s*)")
 remaining_quote_converter    = re.compile(u'(.)(?=["“”»])')
 shifted_ellipses             = re.compile("(\.\.\.+|…)\s*")
-shifted_standard_punctuation = re.compile("([\(\[\{\}\]\)\!\?#\$%;~&+=<>|/:])\s*")
+shifted_standard_punctuation = re.compile("([\(\[\{\}\]\)\!\?#\$%;~&+=<>|/:,])\s*")
 period_mover                 = re.compile(u"([a-zA-ZÀ-ż]{2})([\./])\s+([a-zA-ZÀ-ż]{2})")
 pure_whitespace              = re.compile("\s+")
 english_specific_appendages = re.compile(u"(\w)(?=['’]([dms])\\b)", re.UNICODE)

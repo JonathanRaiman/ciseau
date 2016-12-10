@@ -28,6 +28,20 @@ class TokenizationTests(unittest.TestCase):
             expression
         )
 
+    def test_numerical_commas_periods_expressions(self):
+        expression = [
+            "In ", "the ", "year ", "2000", ", ",
+            "there ", "was ", "evidence ", "that ", "100,000 ",
+            "martians ", "came ", "to ", "see ", "us", ", ",
+            "but ", "I ", "did", "n't ", "even ", "hear ",
+            "98.2", ",", "98.3 ", "or ", "98.4 ", "speak ",
+            "about ", "it", ","
+        ]
+        self.assertEqual(
+            tokenize("".join(expression)),
+            expression
+        )
+
     def test_abbreviations(self):
         expression = [
             "Mr. ", "hooligan ", "and ", "his ", "brother ", "DR. ",
@@ -36,9 +50,7 @@ class TokenizationTests(unittest.TestCase):
             "of ", "all ", "this ", "bs", "."
         ]
         self.assertEqual(
-            tokenize(
-                "".join(expression)
-            ),
+            tokenize("".join(expression)),
             expression
         )
 

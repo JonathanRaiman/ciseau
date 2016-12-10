@@ -11,6 +11,7 @@ from .constants import (
 from .regular_expressions import (
     word_with_period,
     no_punctuation,
+    numerical_expression,
     dash_converter,
     pure_whitespace,
     left_quote_shifter,
@@ -25,7 +26,6 @@ from .regular_expressions import (
     right_single_quote_converter,
     simple_dash_finder,
     advanced_dash_finder,
-    comma_shifter,
     url_file_finder,
     shifted_ellipses,
     shifted_standard_punctuation
@@ -227,7 +227,7 @@ def tokenize(text, normalize_ascii=True):
         # use dashes as the breakpoint:
         # the rhino--truck -> the rhino -- truck
         simple_dash_finder if normalize_ascii else advanced_dash_finder,
-        comma_shifter,
+        numerical_expression,
         url_file_finder,
         shifted_ellipses,
         # the #rhino! -> the # rhino ! ;
