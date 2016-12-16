@@ -56,13 +56,13 @@ class TokenizationTests(unittest.TestCase):
 
     def test_em_dash(self):
         expression = [
-            "The ", "earthquake ", "was ",
-            "also ", "felt ", "in ", "nearby ", "countries ",
-            "and ", "as ", "far ", "away ", "as ", "both ",
-            "Beijing ", "and ", "Shanghai ", "—", "1,500 ", "km ",
-            "(", "930 ", "mi ", ") ", "and ", "1,700 ", "km ", "(",
-            "1,060 ", "mi ", ") ", "away", "—", "where ", "office ",
-            "buildings ", "swayed ", "with ", "the ", "tremor", "."
+            u"The ", u"earthquake ", u"was ",
+            u"also ", u"felt ", u"in ", u"nearby ", u"countries ",
+            u"and ", u"as ", u"far ", u"away ", u"as ", u"both ",
+            u"Beijing ", u"and ", u"Shanghai ", u"—", u"1,500 ", u"km ",
+            u"(", u"930 ", u"mi ", u") ", u"and ", u"1,700 ", u"km ", u"(",
+            u"1,060 ", u"mi ", u") ", u"away", u"—", u"where ", u"office ",
+            u"buildings ", u"swayed ", u"with ", u"the ", u"tremor", u"."
         ]
         self.assertEqual(
             tokenize("".join(expression), normalize_ascii=False),
