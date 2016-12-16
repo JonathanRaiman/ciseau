@@ -54,6 +54,21 @@ class TokenizationTests(unittest.TestCase):
             expression
         )
 
+    def test_em_dash(self):
+        expression = [
+            "The ", "earthquake ", "was ",
+            "also ", "felt ", "in ", "nearby ", "countries ",
+            "and ", "as ", "far ", "away ", "as ", "both ",
+            "Beijing ", "and ", "Shanghai ", "—", "1,500 ", "km ",
+            "(", "930 ", "mi ", ") ", "and ", "1,700 ", "km ", "(",
+            "1,060 ", "mi ", ") ", "away", "—", "where ", "office ",
+            "buildings ", "swayed ", "with ", "the ", "tremor", "."
+        ]
+        self.assertEqual(
+            tokenize("".join(expression), normalize_ascii=False),
+            expression
+        )
+
     def test_quoted_expressions_with_ascii(self):
         expression = [
             "Julius ", u"Cæsar ", "declared ", "-- ", "professed ", "- ",

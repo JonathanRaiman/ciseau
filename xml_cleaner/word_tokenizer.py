@@ -12,6 +12,7 @@ from .regular_expressions import (
     word_with_period,
     no_punctuation,
     numerical_expression,
+    repeated_dash_converter,
     dash_converter,
     pure_whitespace,
     left_quote_shifter,
@@ -200,7 +201,7 @@ def tokenize(text, normalize_ascii=True):
         # normalize these greco-roman characters to ascii:
         text = text.replace(u"œ", "oe").replace(u"æ", "ae")
         # normalize dashes:
-        text = dash_converter.sub("-", text)
+        text = repeated_dash_converter.sub("-", text)
     # 3. let's construct an integer array of the possible split locations:
     split_locations = [UNDECIDED] * len(text)
     regexes = (
@@ -242,5 +243,8 @@ def tokenize(text, normalize_ascii=True):
     # 6. Remove splitting on exceptional uses of periods:
     # I'm with Mr. -> I 'm with Mr. , I'm with Mister. -> I 'm with Mister .
     protect_shorthand(text, split_locations)
+
+    if normalize_ascii:
+        text = dash_converter.sub("-", text)
     # 7. Return the split string using the integer list:
     return list(split_with_locations(text, split_locations))

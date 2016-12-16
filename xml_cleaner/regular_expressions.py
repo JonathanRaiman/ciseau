@@ -4,9 +4,10 @@ import sys
 
 from .constants import dashes
 
-matching_dashes = dashes[:]
-matching_dashes.remove("--+")
-matching_dashes.append("-+")
+dashes_no_repeats = dashes[:]
+dashes_no_repeats.remove("--+")
+
+matching_dashes = dashes_no_repeats + ["-+"]
 
 word_with_alpha_and_period   = re.compile("^([^\.]+)(\.\s*)$")
 one_letter_long_or_repeating = re.compile("^(?:(?:[a-z])|(?:[a-z](?:\.[a-z])+))$", re.IGNORECASE)
@@ -17,9 +18,11 @@ left_single_quote_converter  = re.compile(u"(?:(\W|^))('\s*)(?=.*\w)", re.UNICOD
 right_single_quote_converter = re.compile(u"(['’]+)(?=\W|$)\s*", re.UNICODE)
 
 if sys.version_info >= (3,3):
-    dash_converter = re.compile("|".join(dashes))
+    repeated_dash_converter = re.compile("--+")
+    dash_converter = re.compile("|".join(dashes_no_repeats))
 else:
-    dash_converter = re.compile(u"|".join(dashes))
+    repeated_dash_converter = re.compile(u"--+")
+    dash_converter = re.compile(u"|".join(dashes_no_repeats))
 
 simple_dash_finder           = re.compile("(-\s*)")
 advanced_dash_finder         = re.compile("(" + "|".join(matching_dashes) + ")\s*")
@@ -30,7 +33,7 @@ url_file_finder              = re.compile("(?:[-a-zA-Z0-9@%._\+~#=]{2,256}://)?"
 numerical_expression         = re.compile("(\d+(?:,\d+)*(?:\.\d+)*(?![a-zA-ZÀ-ż])\s*)")
 remaining_quote_converter    = re.compile(u'(.)(?=["“”»])')
 shifted_ellipses             = re.compile("(\.\.\.+|…)\s*")
-shifted_standard_punctuation = re.compile("([\(\[\{\}\]\)\!\?#\$%;~&+=<>|/:,])\s*")
+shifted_standard_punctuation = re.compile("([\(\[\{\}\]\)\!\?#\$%;~&+=<>|/:,—])\s*")
 period_mover                 = re.compile(u"([a-zA-ZÀ-ż]{2})([\./])\s+([a-zA-ZÀ-ż]{2})")
 pure_whitespace              = re.compile("\s+")
 english_specific_appendages = re.compile(u"(\w)(?=['’]([dms])\\b)", re.UNICODE)
