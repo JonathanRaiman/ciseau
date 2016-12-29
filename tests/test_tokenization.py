@@ -285,3 +285,38 @@ class TokenizationTests(unittest.TestCase):
                 ),
                 expression
             )
+
+    def test_german_tokenization(self):
+        expressions = [
+            [
+                [
+                    u"Als ", u"Vertreter ", u"des ", u"One", u"-", u"Nation", u"-", u"Konservatismus ",
+                    u"bekleidete ", u"er ", u"nach ", u"dem ", u"Wahlsieg ", u"der ", u"Tories ", u"1951 ",
+                    u"als ", u"führendes ", u"Kabinettsmitglied ", u"mehrere ", u"wichtige ", u"Regierungsämter",
+                    u", ", u"unter ", u"anderem ", u"das ", u"des ", u"Verteidigungsministers", u", ", u"des ",
+                    u"Außenministers ", u"und ", u"des ", u"Schatzkanzlers", u". "
+                ],
+                [
+                    u"Seine ", u"Amtszeit ", u"als ",
+                    u"Premierminister ", u"war ", u"innenpolitisch ", u"geprägt ", u"von ", u"zahlreichen ", u"Reformen ",
+                    u"sowie ", u"einer ", u"prosperierenden ", u"Wirtschaft ", u"mit ", u"niedriger ", u"Arbeitslosigkeit ",
+                    u"und ", u"ungleichmäßigem ", u"Wirtschaftswachstum", u". ",
+                ],
+                [
+                    u"Außenpolitisch ", u"behob ", u"er ", u"die ", u"durch ", u"die ", u"Sueskrise ", u"entstandene ",
+                    u"Entfremdung ", u"mit ", u"den ", u"USA", u", ", u"erreichte ", u"die ", u"Lieferung ", u"von ",
+                    u"amerikanischen ", u"Polaris", u"-", u"Mittelstreckenraketen ", u"als ", u"neuen ", u"Kern ",
+                    u"der ", u"britischen ", u"nuklearen ", u"Abschreckung ", u"und ", u"bereitete ", u"den ", u"Weg ",
+                    u"für ", u"ein ", u"partielles ", u"Atomteststoppabkommen", u"."
+                ]
+            ]
+        ]
+        for expression in expressions:
+            self.assertEqual(
+                sent_tokenize(
+                    "".join(w for sent in expression for w in sent),
+                    keep_whitespace=True,
+                    normalize_ascii=False
+                ),
+                expression
+            )
