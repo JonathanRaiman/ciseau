@@ -6,7 +6,7 @@ def readfile(fname):
 
 setup(
     name='xml-cleaner',
-    version='2.0.3',
+    version='2.0.4',
     description='Word and sentence tokenization.',
     long_description=readfile('README.md'),
     ext_modules=[],
