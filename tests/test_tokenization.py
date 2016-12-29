@@ -190,3 +190,98 @@ class TokenizationTests(unittest.TestCase):
             ),
             expression
         )
+
+    def test_period_sequences(self):
+        expression = [[
+            "Mr. ", "Joe ", "was ", "always ", "late ", "to ", "his ",
+            "dates", ", ", "appointments", ", ", "etc.", "."
+        ]]
+        self.assertEqual(
+            sent_tokenize(
+                "".join(w for sent in expression for w in sent),
+                keep_whitespace=True
+            ),
+            expression
+        )
+
+    def test_spanish_tokenization(self):
+        expressions = [
+            [
+                [
+                    u"Pero ", u"si ", u"no ", u"es ", u"el ", u"caso", u", ", u"llega ",
+                    u"el ", u"momento ", u"de ", u"hacerse ", u"la ", u"pregunta ", u"de ",
+                    u"cada ", u"año", u". "
+                ],
+                [
+                    u"¿", u"Qué ", u"hago ", u"con ", u"estos ", u"sobres ", u"de ", u"jamón ",
+                    u"o ", u"este ", u"lomo ", u"ibérico", u"? "
+                ],
+                [
+                    u"¿", u"Los ", u"puedo ", u"congelar ", u"o ", u"es ", u"una ", u"aberración",
+                    u"? ",
+                ],
+                [
+                    u"La ", u"respuesta ", u"rápida ", u"sería ", u"un ", u"sí", u"."
+                ]
+            ],
+            [
+                [
+                    u"De ", u"hecho", u", ", u"es ", u"algo ", u"que ", u"lleva ", u"mucho ", u"tiempo ",
+                    u"haciéndose", u". "
+                ],
+                [
+                    u"En ", u"las ", u"matanzas ", u"de ", u"los ", u"pueblos ", u"muchas ", u"piezas ",
+                    u"se ", u"congelan ", u"una ", u"vez ", u"curadas ", u"para ", u"ir ", u"luego ",
+                    u"dándoles ", u"salida ", u"a ", u"lo ", u"largo ", u"de ", u"todo ", u"el ", u"año",
+                    u". "
+                ],
+                [
+                    u"Otro ", u"ejemplo ", u"clásico", u": ", u"las ", u"embarazas ", u"que ", u"quieren ",
+                    u"evitar ", u"cualquier ", u"posible ", u"riesgo ", u"de ", u"toxoplasmosis ", u"pero ",
+                    u"no ", u"quieren ", u"renunciar ", u"a ", u"los ", u"embutidos ", u"durante ", u"eso ",
+                    u"nueve ", u"meses", u". "
+                ],
+                [
+                    u"¿", u"Solución", u"? "
+                ],
+                [
+                    u"Congelarlo", u"."
+                ]
+            ],
+            [
+                [
+                    u"Que ", u"lo ", u"sepas", u", ", u"¡", u"no ", u"pienso ", u"hacerlo ", u"todo ", u"yo ",
+                    u"sola", u"!"
+                ]
+            ],
+            [
+                [
+                    u"¡", u"No ", u"pienso ", u"hacerlo ", u"todo ", u"yo ", u"sola", u", ", u"que ", u"lo ",
+                    u"sepas", u"!"
+                ]
+            ],
+            [
+                [
+                    u"¡", u"No ", u"me ", u"digas ", u"nada", u"! "
+                ],
+                [
+                    u"¡", u"Te ", u"has ", u"portado ", u"fatal", u"! "
+                ],
+                [
+                    u"¡", u"No ", u"quiero ", u"volver ", u"a ", u"saber ", u"nada ", u"de ", u"ti", u"!"
+                ]
+            ],
+            [
+                [
+                    u"¡¡¡", u"Al ", u"ladrón", u"!!!"
+                ]
+            ]
+        ]
+        for expression in expressions:
+            self.assertEqual(
+                sent_tokenize(
+                    "".join(w for sent in expression for w in sent),
+                    keep_whitespace=True
+                ),
+                expression
+            )

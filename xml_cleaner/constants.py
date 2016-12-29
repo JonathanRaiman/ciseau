@@ -56,7 +56,7 @@ MONTHS = {
     "june", "july", "august", "september", "october",
     "november", "december"
 }
-PUNCT_SYMBOLS = {'.', "...", "?", "!"}
+PUNCT_SYMBOLS = {'.', "...", "?", "!", "..", "!!", "??", "!?", "?!", u"…"}
 CONTINUE_PUNCT_SYMBOLS = {';', ',', '-', ':'} | set(dashes)
 OPENING_SYMBOLS = {'(', '[', '"', '{', '“'}
 CLOSING_SYMBOLS = {')', ']', '"', '}', '”'}

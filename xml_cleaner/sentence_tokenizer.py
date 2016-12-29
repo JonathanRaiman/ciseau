@@ -7,6 +7,11 @@ from .constants import (
 )
 from .word_tokenizer import tokenize
 
+def is_end_symbol(symbol):
+    return (
+        symbol[:2] in PUNCT_SYMBOLS
+    )
+
 def detect_sentence_boundaries(tokens):
     """
     Subdivide an input list of strings (tokens)
@@ -43,18 +48,18 @@ def detect_sentence_boundaries(tokens):
             if len(words) == 0:
                 # end if a sentence finishes inside quoted section,
                 # and no sentence was begun beforehand
-                if tokenized[i][-2].rstrip() in PUNCT_SYMBOLS:
+                if is_end_symbol(tokenized[i][-2].rstrip()):
                     end_sentence = True
             else:
                 # end if a sentence finishes inside quote marks
                 if (tokenized[i][0][0] == '"' and
-                    tokenized[i][-2].rstrip() in PUNCT_SYMBOLS and
+                    is_end_symbol(tokenized[i][-2].rstrip()) and
                     not tokenized[i][1][0].isupper()):
                     end_sentence = True
             words.extend(tokenized[i])
         else:
             stripped_tokenized = tokenized[i].rstrip()
-            if stripped_tokenized in PUNCT_SYMBOLS:
+            if is_end_symbol(stripped_tokenized):
                 words.append(tokenized[i])
                 not_last_word = i + 1 != len(tokenized)
                 next_word_lowercase = (

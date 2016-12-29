@@ -52,7 +52,7 @@ def protect_shorthand(text, split_locations):
         match_start = match.start()
         match_end = match.end()
         for char_pos in range(match_start, match_end):
-            if split_locations[char_pos] == SHOULD_SPLIT:
+            if split_locations[char_pos] == SHOULD_SPLIT and match_end - char_pos > 1:
                 match_start = char_pos
         word = text[match_start:match_end]
 
@@ -73,28 +73,35 @@ def protect_shorthand(text, split_locations):
             one_letter_long_or_repeating.match(word[:-1]) is not None
         )
         is_digit = False if is_abbr_like else word[:-1].isdigit()
-        is_not_last_word = i != total_words - 1
+
+        is_last_word = i == (total_words - 1)
+        is_ending = is_last_word and (match_end == len(text) or text[match_end:].isspace())
+        is_not_ending = not is_ending
         abbreviation_and_not_end = (
             len(word) > 1 and
             is_abbr_like and
-            is_not_last_word
+            is_not_ending
         )
 
         if abbreviation_and_not_end and (
-                word_matches[i+1].group(0)[0].islower() or
-                word_matches[i+1].group(0) in PUNCT_SYMBOLS or
+                (not is_last_word and word_matches[i+1].group(0)[0].islower()) or
+                (not is_last_word and word_matches[i+1].group(0) in PUNCT_SYMBOLS) or
                 word[0].isupper() or
                 word_is_in_abbr or
                 len(word) == 2):
             # next word is lowercase (e.g. not a new sentence?), or next word
             # is punctuation or next word is totally uppercase (e.g. 'Mister.
             # ABAGNALE called to the stand')
+            if split_locations[period_pos] == SHOULD_SPLIT and period_pos + 1 < len(split_locations):
+                split_locations[period_pos + 1] = SHOULD_SPLIT
             split_locations[period_pos] = SHOULD_NOT_SPLIT
         elif (is_digit and
               len(word[:-1]) <= 2 and
-              is_not_last_word and
+              not is_last_word and
               word_matches[i+1].group(0).lower() in MONTHS):
             # a date or weird number with a period:
+            if split_locations[period_pos] == SHOULD_SPLIT and period_pos + 1 < len(split_locations):
+                split_locations[period_pos + 1] = SHOULD_SPLIT
             split_locations[period_pos] = SHOULD_NOT_SPLIT
         elif split_locations[period_pos] == UNDECIDED:
             # split this period into its own segment:
