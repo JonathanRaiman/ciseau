@@ -41,3 +41,19 @@ Testing
 -------
 
 Run `nose2`.
+
+
+If you find this project useful for your work or research, here's how you can cite it:
+
+```latex
+@misc{RaimanCiseau2017,
+  author = {Raiman, Jonathan},
+  title = {Ciseau},
+  year = {2017},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/jonathanraiman/ciseau}},
+  commit = {fe88b9d7f131b88bcdd2ff361df60b6d1cc64c04}
+}
+```
+
