@@ -1,2 +1,2 @@
 include README.md
-recursive-include xml_cleaner *.pyx
+recursive-include ciseau *.pyx

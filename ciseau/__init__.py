@@ -4,7 +4,7 @@ Module for XML cleaning and text tokenization.
 Usage
 -----
 
-> xml_cleaner.tokenize("Joey was a great sailor.")
+> ciseau.tokenize("Joey was a great sailor.")
 #=> [["Joey", "was", "a", "great", "sailor", "."]]
 
 """

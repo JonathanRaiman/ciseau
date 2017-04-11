@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 import sys
-from xml_cleaner import tokenize, sent_tokenize
+from ciseau import tokenize, sent_tokenize
 
 class TokenizationTests(unittest.TestCase):
     def test_quoted_expressions(self):

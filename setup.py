@@ -5,8 +5,8 @@ def readfile(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name='xml-cleaner',
-    version='2.0.4',
+    name='ciseau',
+    version='1.0.0',
     description='Word and sentence tokenization.',
     long_description=readfile('README.md'),
     ext_modules=[],
@@ -14,8 +14,8 @@ setup(
     py_modules = [],
     author='Jonathan Raiman',
     author_email='jonathanraiman@gmail.com',
-    url='https://github.com/JonathanRaiman/xml_cleaner',
-    download_url='https://github.com/JonathanRaiman/xml_cleaner',
+    url='https://github.com/JonathanRaiman/ciseau',
+    download_url='https://github.com/JonathanRaiman/ciseau',
     keywords='XML, tokenization, NLP',
     license='MIT',
     platforms='any',
