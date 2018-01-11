@@ -6,7 +6,7 @@ def readfile(fname):
 
 setup(
     name='ciseau',
-    version='1.0.0',
+    version='1.0.1',
     description='Word and sentence tokenization.',
     long_description=readfile('README.md'),
     ext_modules=[],
