@@ -17,6 +17,20 @@ class TokenizationTests(unittest.TestCase):
             expression
         )
 
+    def test_pre_post_quote(self):
+        expression = [
+            "On ", "January ", "28", ", ", "2011 ", ", ", "''",
+            "Hollywood ", "Reporter", "'' ", "announced ",
+            "that ", "Paramount ", "Pictures ", "had ", "given ",
+            "the ", "green ", "light", "."
+        ]
+        self.assertEqual(
+            tokenize(
+                "".join(expression)
+            ),
+            expression
+        )
+
     def test_weird_hybrid_expressions(self):
         expression = [
             u"Beyoncé", u"'s ", u"1840", u"'s ", u"song ", u"<", u"3lovely", u"."

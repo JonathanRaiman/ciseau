@@ -29,7 +29,8 @@ from .regular_expressions import (
     advanced_dash_finder,
     url_file_finder,
     shifted_ellipses,
-    shifted_standard_punctuation
+    shifted_standard_punctuation,
+    multi_single_quote_finder
 )
 
 
@@ -211,6 +212,7 @@ def tokenize(text, normalize_ascii=True):
         text = repeated_dash_converter.sub("-", text)
     # 3. let's construct an integer array of the possible split locations:
     split_locations = [UNDECIDED] * len(text)
+
     regexes = (
         pure_whitespace,
         left_quote_shifter,
@@ -231,6 +233,7 @@ def tokenize(text, normalize_ascii=True):
         mark_regex(regex, text, split_locations)
 
     begin_end_regexes = (
+        multi_single_quote_finder,
         right_single_quote_converter,
         # use dashes as the breakpoint:
         # the rhino--truck -> the rhino -- truck

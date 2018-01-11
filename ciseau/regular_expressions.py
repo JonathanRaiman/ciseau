@@ -26,6 +26,7 @@ else:
 
 simple_dash_finder           = re.compile("(-\s*)")
 advanced_dash_finder         = re.compile("(" + "|".join(matching_dashes) + ")\s*")
+multi_single_quote_finder    = re.compile("('{2,})\s*")
 url_file_finder              = re.compile("(?:[-a-zA-Z0-9@%._\+~#=]{2,256}://)?"
                                           "(?:www\.)?[-a-zA-Z0-9@:%\._\+~#=]{2,"
                                           "256}\.[a-z]{2,6}[-a-zA-Z0-9@:%_\+.~#"
